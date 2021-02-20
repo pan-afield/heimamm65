@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import vueRouter from 'vue-router'
+import VueRouter from 'vue-router'
 import test from '@/views/test.vue'
 import login from '@/views/login/index.vue'
-Vue.use(vueRouter)
-var router = new vueRouter({
+Vue.use(VueRouter)
+var router = new VueRouter({
     routes: [
         {
         path: '/test',
