@@ -51,18 +51,21 @@
           <el-button type="primary" class="formbtn" @click = "login">登录</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="formbtn">注册</el-button>
+          <el-button type="primary" class="formbtn" @click= "showZheCe">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="right">
       <img src="@/assets/login_banner_ele.png" alt="" />
     </div>
+    <register ref="myRegister"></register>
   </div>
 </template>
 
 <script>
+import register from './register.vue';
 export default {
+  components: { register },
   data() {
     return {
       form: {
@@ -102,6 +105,10 @@ export default {
           this.$message.error('验证失败')
         }
       })
+    },
+    showZheCe(){
+      var obj = this.$refs.myRegister
+      obj.showRegister = true
     }
   }
 };
