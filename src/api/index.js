@@ -8,7 +8,7 @@ export function getCode({ code, phone }) {
             code: code,
             phone: phone
         },
-        withCredentials: true
+        
     })
 }
 export function registerApi({ username, phone, email, avatar, password, rcode }) {
@@ -23,6 +23,30 @@ export function registerApi({ username, phone, email, avatar, password, rcode })
             password: password,
             rcode: rcode
         },
-        withCredentials: true
+        
+    })
+}
+
+export function loginApi ({phone,password,code}){
+    return _http({
+        url: '/login',
+        method: 'POST',
+        data:{
+            phone,
+            password,
+            code
+        }
+    })
+}
+
+export function getUserInfoApi(){
+    return _http({
+        url: '/info'
+    })
+}
+
+export function logoutApi(){
+    return _http({
+        url: '/logout'
     })
 }

@@ -145,6 +145,16 @@ export default {
       },
     };
   },
+  watch:{
+    showRegister(newVal,oldVal){
+      console.log(newVal);
+      console.log(oldVal);
+      if(oldVal){
+        this.$refs.myform.resetFields()
+        this.imageUrl = ''
+      }
+    }
+  },
   methods: {
     changeCode() {
       this.codeUrl = `${process.env.VUE_APP_BASEURL}/captcha?type=sendsms&_t=${Date.now()}`;
