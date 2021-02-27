@@ -3,32 +3,67 @@
     <el-container class="mycontainer">
       <el-header>
         <div class="logo">
-          <i class="el-icon-s-fold"></i>
+          <i
+            class="el-icon-s-fold"
+            v-if="isCollapse === false"
+            @click="isCollapse = !isCollapse"
+          ></i>
+          <i
+            class="el-icon-s-unfold"
+            v-else
+            @click="isCollapse = !isCollapse"
+          ></i>
           <img src="@/assets/logo.png" alt="" />
           <span>黑马面面</span>
         </div>
         <div class="info" v-if="userInfo.avatar">
-          <img :src="baseURL + '/' + userInfo.avatar" alt="" />
-          <span class="myspan">{{ userInfo.username }}，您好</span>
+          <img :src="baseURL + '/' + $store.state.userInfo.avatar" alt="" />
+          <span class="myspan">{{ $store.state.userInfo.username }}，您好</span>
           <el-button @click="logout" size="mini" type="primary">退出</el-button>
         </div>
       </el-header>
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
-        <el-main>Main</el-main>
+        <el-aside width="auto">
+          <el-menu class="el-menu-vertical-demo" :collapse="isCollapse" :router="true">
+            <el-menu-item index="/home/chart">
+              <i class="el-icon-pie-chart"></i>
+              <span slot="title">数据概览</span>
+            </el-menu-item>
+            <el-menu-item index="/home/userList">
+              <i class="el-icon-user"></i>
+              <span slot="title">用户列表</span>
+            </el-menu-item>
+            <el-menu-item index="/home/question">
+              <i class="el-icon-edit-outline"></i>
+              <span slot="title">题库列表</span>
+            </el-menu-item>
+            <el-menu-item index="/home/business">
+              <i class="el-icon-office-building"></i>
+              <span slot="title">企业列表</span>
+            </el-menu-item>
+            <el-menu-item index="/home/subject">
+              <i class="el-icon-notebook-2"></i>
+              <span slot="title">学科列表</span>
+            </el-menu-item>
+          </el-menu>
+        </el-aside>
+        <el-main>
+          <router-view />
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
-import { getToken ,removeToken} from "@/utils/token.js";
-import { getUserInfoApi ,logoutApi} from "@/api/index.js";
+import { getToken, removeToken } from "@/utils/token.js";
+import { getUserInfoApi, logoutApi } from "@/api/index.js";
 export default {
   data() {
     return {
       userInfo: {},
       baseURL: process.env.VUE_APP_BASEURL,
+      isCollapse: false,
     };
   },
   created() {
@@ -40,6 +75,7 @@ export default {
     getUserInfoApi().then((res) => {
       console.log(res);
       this.userInfo = res.data;
+      this.$store.state.userInfo = this.userInfo
     });
   },
   methods: {
@@ -50,11 +86,11 @@ export default {
         type: "warning",
       })
         .then(() => {
-          logoutApi().then(res=>{
-              console.log(res);
-              removeToken()
-              this.$router.push('/login')
-          })
+          logoutApi().then((res) => {
+            console.log(res);
+            removeToken();
+            this.$router.push("/login");
+          });
         })
         .catch(() => {});
     },
@@ -109,6 +145,9 @@ export default {
   .el-aside {
     color: #333;
     height: 100%;
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+      width: 188px;
+    }
   }
 
   .el-main {
